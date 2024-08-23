@@ -1,0 +1,13 @@
+# Terraform workspace files
+.terraform/
+
+# Terraform state files
+*.tfstate
+*.tfstate.*
+
+# Terraform lock file (SHOULD NOT BE IGNORED IN COLLABORATIVE ENVIRONMENT!!)
+.terraform.lock.hcl
+
+# Keys
+*.pem
+*.key
