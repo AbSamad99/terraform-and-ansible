@@ -1,0 +1,29 @@
+---
+- hosts: all
+  become: true
+  pre_tasks:
+    - name: "Update and upgrade distribution"
+      apt:
+        upgrade: dist
+        update_cache: yes
+
+- hosts: all
+  become: true
+  tasks:
+    - name: Add user for ansible
+      user:
+        name: "ansible-user"
+        group: "root"
+
+    - name: Add key for ansible-user
+      authorized_key:
+        user: "ansible-user"
+        key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF4ExiYtprVo8q/WagKAs3JgQORv1kBUkzm4ruwqgSqb ansible"
+
+    - name: Add sudoers file for ansible-user
+      copy:
+        src: "sudoers-ansible-user"
+        dest: "/etc/sudoers.d/ansible-user"
+        owner: "root"
+        group: "root"
+        mode: 0440

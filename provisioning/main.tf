@@ -56,6 +56,15 @@ resource "aws_security_group_rule" "allow_rdp" {
   cidr_blocks       = ["172.110.70.155/32"] # My IP
 }
 
+resource "aws_security_group_rule" "allow_egress" {
+  type              = "egress"
+  security_group_id = aws_security_group.instances.id
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
+}
+
 # Provisioning the ubuntu instances
 resource "aws_instance" "ubuntu-instances" {
   count           = 3
@@ -81,12 +90,12 @@ resource "aws_instance" "ubuntu-instances" {
 #   }
 # }
 
-output "ubuntu-instances-public-ip" {
-  value = aws_instance.ubuntu-instances[*].public_ip
+output "web-servers" {
+  value = slice(aws_instance.ubuntu-instances[*].public_ip, 0, 2)
 }
 
-output "ubuntu-instances-private-ip" {
-  value = aws_instance.ubuntu-instances[*].private_ip
+output "db-server" {
+  value = aws_instance.ubuntu-instances[2].public_ip
 }
 
 # output "centos-instance-public-ip" {

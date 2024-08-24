@@ -11,3 +11,10 @@
 # Keys
 *.pem
 *.key
+*.pub
+
+# Inventory
+inventory
+
+# VSC settings
+settings.json
