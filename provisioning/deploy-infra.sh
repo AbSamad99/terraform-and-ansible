@@ -6,15 +6,16 @@ terraform init
 terraform apply -auto-approve
 
 inventoryPath="$configuringPath/inventory"
-echo "[web-servers]" >> $inventoryPath
-terraform output -json web-servers | jq -r '.[]' >> $inventoryPath
-echo "[db-server]" >> $inventoryPath 
-terraform output -json db-server | jq -r >> $inventoryPath
+echo "[web_servers]" > $inventoryPath
+terraform output -json web_servers | jq -r '.[]' >> $inventoryPath
+echo "[db_server]" >> $inventoryPath 
+terraform output -json db_server | jq -r >> $inventoryPath
 cp rsa-key.* $configuringPath/
 chmod 400 $configuringPath/rsa-key.pem
 
 while read -r ip; do
-  if [[ "$ip" =~ ^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$ ]]; then
+  if [[ "$ip" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
+    echo "Getting certificate of $ip"
     ssh-keyscan -H "$ip" >> ~/.ssh/known_hosts
   fi
 done < $inventoryPath

@@ -3,7 +3,7 @@
   become: true
   pre_tasks:
     - name: "Update and upgrade distribution"
-      apt:
+      ansible.builtin.apt:
         upgrade: dist
         update_cache: yes
 
@@ -11,17 +11,18 @@
   become: true
   tasks:
     - name: Add user for ansible
-      user:
+      ansible.builtin.user:
         name: "ansible-user"
         group: "root"
+        shell: "/bin/bash"
 
     - name: Add key for ansible-user
-      authorized_key:
+      ansible.posix.authorized_key:
         user: "ansible-user"
         key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF4ExiYtprVo8q/WagKAs3JgQORv1kBUkzm4ruwqgSqb ansible"
 
     - name: Add sudoers file for ansible-user
-      copy:
+      ansible.builtin.copy:
         src: "sudoers-ansible-user"
         dest: "/etc/sudoers.d/ansible-user"
         owner: "root"

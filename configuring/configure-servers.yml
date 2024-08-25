@@ -1,0 +1,17 @@
+---
+- hosts: all
+  become: true
+  pre_tasks:
+    - name: Update repository cache
+      ansible.builtin.apt:
+        update_cache: yes
+
+- hosts: web_servers
+  become: true
+  roles:
+    - web_servers
+
+- hosts: db_server
+  become: true
+  roles:
+    - db_server

@@ -1,0 +1,9 @@
+- name: Install mariadb-server
+  ansible.builtin.apt:
+    name:
+      - mariadb-server
+
+- name: Make sure the service is running
+  ansible.builtin.service:
+    name: mariadb
+    state: started

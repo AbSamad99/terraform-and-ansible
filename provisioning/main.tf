@@ -56,6 +56,15 @@ resource "aws_security_group_rule" "allow_rdp" {
   cidr_blocks       = ["172.110.70.155/32"] # My IP
 }
 
+resource "aws_security_group_rule" "allow_http" {
+  type              = "ingress"
+  security_group_id = aws_security_group.instances.id
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  cidr_blocks       = ["172.110.70.155/32"] # My IP
+}
+
 resource "aws_security_group_rule" "allow_egress" {
   type              = "egress"
   security_group_id = aws_security_group.instances.id
@@ -90,11 +99,11 @@ resource "aws_instance" "ubuntu-instances" {
 #   }
 # }
 
-output "web-servers" {
+output "web_servers" {
   value = slice(aws_instance.ubuntu-instances[*].public_ip, 0, 2)
 }
 
-output "db-server" {
+output "db_server" {
   value = aws_instance.ubuntu-instances[2].public_ip
 }
 

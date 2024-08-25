@@ -1,0 +1,10 @@
+- name: Install apache and php support
+  ansible.builtin.apt:
+    name:
+      - apache2
+      - libapache2-mod-php
+
+- name: Ensure apache is running
+  ansible.builtin.service:
+    name: apache2
+    state: started
