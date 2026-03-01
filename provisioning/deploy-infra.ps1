@@ -4,9 +4,9 @@ terraform init
 terraform plan
 terraform apply -auto-approve
 
-$addresses = terraform output ubuntu-instances-public-ip
-$cleanAddress = $($addresses -replace '[\[\]""]', '').Trim()
-$splitAddress = $cleanAddress.Split(',')
-$splitAddress | ForEach-Object {$_.Trim()} | Set-Content -Path "$configuringPath\inventory"
+$webIPs = terraform output -json web_servers | ConvertFrom-Json
+$dbIP = terraform output -raw db_server
+
+@("[web_servers]") + $webIPs + @("", "[db_server]", $dbIP) | Set-Content -Path "$configuringPath\inventory"
 
 cp rsa-key.* "$configuringPath\"
